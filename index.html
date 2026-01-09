@@ -57,11 +57,10 @@
             background-color: rgba(37, 37, 37, 0.85);
             /* Semi-transparent for BG visibility */
             border: 2px solid #333;
-            border-radius: 4px;
+            border-radius: 0;
             display: block;
-            /* Responsive additions */
-            max-width: 100%;
-            height: auto;
+            width: 100%;
+            height: 100%;
         }
 
         /* HUD Overlay */
@@ -357,8 +356,9 @@
          */
 
         // --- Constants ---
-        const CANVAS_WIDTH = 800;
-        const CANVAS_HEIGHT = 600;
+        // --- Constants ---
+        let CANVAS_WIDTH = window.innerWidth;
+        let CANVAS_HEIGHT = window.innerHeight;
         const PLAYER_SIZE = 60;
         const BANANA_SIZE = 50; // Bigger for image
         const GAME_DURATION = 60; // seconds
@@ -413,6 +413,22 @@
         // --- Setup ---
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+
+        // Initial Size Set
+        canvas.width = CANVAS_WIDTH;
+        canvas.height = CANVAS_HEIGHT;
+
+        // Resize Listener
+        window.addEventListener('resize', () => {
+            CANVAS_WIDTH = window.innerWidth;
+            CANVAS_HEIGHT = window.innerHeight;
+            canvas.width = CANVAS_WIDTH;
+            canvas.height = CANVAS_HEIGHT;
+
+            // Optional: Clamp player to new bounds instantly
+            if (player.x > CANVAS_WIDTH - PLAYER_SIZE / 2) player.x = CANVAS_WIDTH - PLAYER_SIZE / 2;
+            if (player.y > CANVAS_HEIGHT - PLAYER_SIZE / 2) player.y = CANVAS_HEIGHT - PLAYER_SIZE / 2;
+        });
 
         // UI Elements
         const hud = document.getElementById('hud');
