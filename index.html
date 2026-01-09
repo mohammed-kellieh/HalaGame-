@@ -372,6 +372,21 @@
         bananaImg.src = './banana.png';
         // Sound
         const coinSound = new Audio('./coin.m4a');
+
+        // Mobile Audio Unlock
+        function unlockAudio() {
+            coinSound.volume = 0;
+            coinSound.play().then(() => {
+                coinSound.pause();
+                coinSound.currentTime = 0;
+                coinSound.volume = 1;
+            }).catch(e => console.log("Audio unlock failed", e));
+
+            document.removeEventListener('click', unlockAudio);
+            document.removeEventListener('touchstart', unlockAudio);
+        }
+        document.addEventListener('click', unlockAudio);
+        document.addEventListener('touchstart', unlockAudio);
         const bgImg = new Image();
         bgImg.src = './new_background.jpg';
         const greenBananaImg = new Image();
