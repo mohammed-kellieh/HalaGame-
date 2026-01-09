@@ -257,17 +257,6 @@
             /* Hidden by default, shown on touch devices via JS or Media Query */
         }
 
-        /* Show on screens smaller than 1024px (Tablets/Phones) */
-        @media (max-width: 1024px) {
-            #joystick-zone {
-                display: block;
-            }
-
-            #fullscreen-btn {
-                display: flex;
-            }
-        }
-
         #fullscreen-btn {
             position: absolute;
             bottom: 40px;
@@ -288,6 +277,17 @@
             display: none;
             /* Controlled by media query */
             user-select: none;
+        }
+
+        /* Show on screens smaller than 1024px (Tablets/Phones) */
+        @media (max-width: 1024px) {
+            #joystick-zone {
+                display: block;
+            }
+
+            #fullscreen-btn {
+                display: flex;
+            }
         }
 
         #joystick-knob {
