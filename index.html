@@ -262,6 +262,32 @@
             #joystick-zone {
                 display: block;
             }
+
+            #fullscreen-btn {
+                display: flex;
+            }
+        }
+
+        #fullscreen-btn {
+            position: absolute;
+            bottom: 40px;
+            right: 110px;
+            /* Left of joystick (30px + 60px + 20px gap) */
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            display: none;
+            /* Controlled by media query */
+            user-select: none;
         }
 
         #joystick-knob {
@@ -575,8 +601,25 @@
             processMovementInput(touch, rect, joystickKnob);
         }
 
+        // --- Fullscreen Toggle ---
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+        fullscreenBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            toggleFullscreen();
+        });
 
-
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
 
         // Shared Input Processor
         function processMovementInput(touch, rect, knobElement) {
