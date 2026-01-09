@@ -66,7 +66,7 @@
         /* HUD Overlay */
         #hud {
             position: absolute;
-            top: 30px;
+            top: 80px;
             left: 10px;
             right: 10px;
             display: flex;
@@ -319,36 +319,36 @@
         </div>
         <div id="exit-btn">EXIT</div>
 
-        < !-- Login Screen -->
-            <div id="login-screen" class="screen">
-                <h1>BANANA CHASE 🍌</h1>
-                <p>Restricted Area. Please identify yourself.</p><input type="text" id="username-input"
-                    placeholder="Enter Name..." autocomplete="off"><button id="login-btn">ENTER</button>
-                <div id="login-error"></div>
+        <!-- Login Screen -->
+        <div id="login-screen" class="screen">
+            <h1>BANANA CHASE 🍌</h1>
+            <p>Restricted Area. Please identify yourself.</p><input type="text" id="username-input"
+                placeholder="Enter Name..." autocomplete="off"><button id="login-btn">ENTER</button>
+            <div id="login-error"></div>
+        </div>
+        <div id="start-screen" class="screen hidden">
+            <h1>WELCOME,
+                HALA !</h1>
+            <p>Select your character to start !</p>
+            <div class="controls-info">
+                <div class="control-block char-select" onclick="selectCharacter(1)"><span
+                        class="control-title p1-title">RED SUS</span><img src="./red_sus.png" width="80"
+                        style="margin:10px 0;"><br>Click to Select </div>
+                <div class="control-block char-select" onclick="selectCharacter(2)"><span
+                        class="control-title p2-title">CYAN HIJAB</span><img src="./p2.png" width="80"
+                        style="margin:10px 0;"><br>Click to Select </div>
             </div>
-            <div id="start-screen" class="screen hidden">
-                <h1>WELCOME,
-                    HALA !</h1>
-                <p>Select your character to start !</p>
-                <div class="controls-info">
-                    <div class="control-block char-select" onclick="selectCharacter(1)"><span
-                            class="control-title p1-title">RED SUS</span><img src="./red_sus.png" width="80"
-                            style="margin:10px 0;"><br>Click to Select </div>
-                    <div class="control-block char-select" onclick="selectCharacter(2)"><span
-                            class="control-title p2-title">CYAN HIJAB</span><img src="./p2.png" width="80"
-                            style="margin:10px 0;"><br>Click to Select </div>
-                </div>
-                <p style="font-size: 14px; margin-top: 20px;">Controls: WASD or Arrow Keys</p>
-            </div>
-            <div id="game-over-screen" class="screen hidden">
-                <h1>TIME'S UP!</h1>
-                <p>Final Score: <span id="final-score" style="color:white; font-weight:bold; font-size: 24px;">0</span>
-                </p><button id="restart-btn">PLAY AGAIN</button>
-            </div>
-            <!-- Mobile Controls (Touch & Drag) Enabled -->
-            <div id="joystick-zone">
-                <div id="joystick-knob"></div>
-            </div>
+            <p style="font-size: 14px; margin-top: 20px;">Controls: WASD or Arrow Keys</p>
+        </div>
+        <div id="game-over-screen" class="screen hidden">
+            <h1>TIME'S UP!</h1>
+            <p>Final Score: <span id="final-score" style="color:white; font-weight:bold; font-size: 24px;">0</span>
+            </p><button id="restart-btn">PLAY AGAIN</button>
+        </div>
+        <!-- Mobile Controls (Touch & Drag) Enabled -->
+        <div id="joystick-zone">
+            <div id="joystick-knob"></div>
+        </div>
     </div>
     <script>
         /**
