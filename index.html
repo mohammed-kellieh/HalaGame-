@@ -204,7 +204,7 @@
         }
 
         /* Login Input */
-        #username-input {
+        .login-input {
             padding: 15px;
             font-size: 20px;
             border-radius: 5px;
@@ -214,6 +214,9 @@
             margin-bottom: 20px;
             text-align: center;
             font-family: inherit;
+            display: block;
+            width: 80%;
+            max-width: 300px;
         }
 
         #login-error {
@@ -348,8 +351,11 @@
         <!-- Login Screen -->
         <div id="login-screen" class="screen">
             <h1>BANANA CHASE 🍌</h1>
-            <p>Restricted Area. Please identify yourself.</p><input type="text" id="username-input"
-                placeholder="Enter Name..." autocomplete="off"><button id="login-btn">ENTER</button>
+            <p>Restricted Area. Please identify yourself.</p>
+            <input type="text" id="username-input" class="login-input" placeholder="Enter Name..." autocomplete="off">
+            <input type="password" id="password-input" class="login-input" placeholder="Enter Password..."
+                autocomplete="off">
+            <button id="login-btn">ENTER</button>
             <div id="login-error"></div>
         </div>
         <div id="start-screen" class="screen hidden">
@@ -553,16 +559,19 @@
         }
 
         function attemptLogin() {
-            const val = usernameInput.value.trim();
+            const username = usernameInput.value.trim();
+            const password = document.getElementById('password-input').value.trim();
 
-            if (val.toLowerCase() === 'hala') {
+            if (password.toLowerCase() === 'hala') {
+                // Update Welcome Message
+                const startScreenH1 = document.querySelector('#start-screen h1');
+                startScreenH1.innerHTML = `WELCOME,<br>${username.toUpperCase() || 'USER'} !`;
+
                 loginScreen.classList.add('hidden');
                 startScreen.classList.remove('hidden');
-            }
-
-            else {
-                loginError.innerText = "ACCESS DENIED. USER NOT AUTHORIZED.";
-                usernameInput.value = '';
+            } else {
+                loginError.innerText = "ACCESS DENIED. INCORRECT PASSWORD.";
+                document.getElementById('password-input').value = '';
             }
         }
 
