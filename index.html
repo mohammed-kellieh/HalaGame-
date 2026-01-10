@@ -538,23 +538,37 @@
         };
 
         window.fetchScores = async () => {
-            if (!db) return;
-            const scoresRef = ref(db, 'scores');
-            const snapshot = await get(query(scoresRef, orderByChild('score'), limitToLast(5)));
-
-            let scores = [];
-            snapshot.forEach(child => {
-                scores.push(child.val());
-            });
-            scores.sort((a, b) => b.score - a.score); // Descending
-
+            console.log("Fetching scores...");
             const list = document.getElementById('embedded-score-list');
-            if (list) {
-                list.innerHTML = "";
-                scores.forEach((s, index) => {
-                    list.innerHTML += `<li><span style="color:var(--accent-color)">#${index + 1} ${s.name}</span> <span>${s.score}</span></li>`;
+            if (list) list.innerHTML = "<li>Loading...</li>";
+
+            if (!db) {
+                console.error("Firebase DB not initialized!");
+                if (list) list.innerHTML = "<li>DB Error (Check Console)</li>";
+                return;
+            }
+
+            try {
+                const scoresRef = ref(db, 'scores');
+                const snapshot = await get(query(scoresRef, orderByChild('score'), limitToLast(5)));
+
+                let scores = [];
+                snapshot.forEach(child => {
+                    scores.push(child.val());
                 });
-                if (scores.length === 0) list.innerHTML = "<li>No scores yet!</li>";
+                scores.sort((a, b) => b.score - a.score); // Descending
+
+                if (list) {
+                    list.innerHTML = "";
+                    scores.forEach((s, index) => {
+                        list.innerHTML += `<li><span style="color:var(--accent-color)">#${index + 1} ${s.name}</span> <span>${s.score}</span></li>`;
+                    });
+                    if (scores.length === 0) list.innerHTML = "<li>No scores yet!</li>";
+                }
+                console.log("Scores fetched:", scores);
+            } catch (e) {
+                console.error("Error fetching scores:", e);
+                if (list) list.innerHTML = "<li>Error loading scores.</li>";
             }
         };
 
