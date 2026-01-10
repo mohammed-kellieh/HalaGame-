@@ -522,6 +522,14 @@
         loginBtn.addEventListener('click', attemptLogin);
         exitBtn.addEventListener('click', quitGame);
 
+        // Allow Enter key to trigger login
+        usernameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') attemptLogin();
+        });
+        document.getElementById('password-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') attemptLogin();
+        });
+
         function quitGame() {
             state.running = false; // Stops loop logic update
             // Reset screens
