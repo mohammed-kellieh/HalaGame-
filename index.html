@@ -845,6 +845,9 @@
             stageEl.innerText = state.stage;
             bananas.length = 0;
             particles.length = 0;
+            for (let i = 0; i < 5; i++) {
+                spawnBanana();
+            }
             player.x = CANVAS_WIDTH / 2;
             player.y = CANVAS_HEIGHT / 2;
             scoreEl.innerText = '0';
