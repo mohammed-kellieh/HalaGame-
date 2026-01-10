@@ -282,6 +282,58 @@
             user-select: none;
         }
 
+        #leaderboard-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid rgba(255, 215, 0, 0.6);
+            border-radius: 50%;
+            color: gold;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            user-select: none;
+        }
+
+        /* Leaderboard Modal */
+        #leaderboard-modal {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--accent-color);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        #leaderboard-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        #leaderboard-list li {
+            background: rgba(255, 255, 255, 0.1);
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            color: white;
+        }
+
+        #leaderboard-list li span:first-child {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
         /* Show on screens smaller than 1024px (Tablets/Phones) */
         @media (max-width: 1024px) {
             #joystick-zone {
@@ -382,7 +434,102 @@
             <div id="joystick-knob"></div>
         </div>
         <div id="fullscreen-btn">⛶</div>
+        <div id="leaderboard-btn">🏆</div>
+
+        <!-- Leaderboard Modal -->
+        <div id="leaderboard-screen" class="screen hidden" style="background: rgba(0,0,0,0.8);">
+            <div id="leaderboard-modal">
+                <h1>🏆 TOP 5 SCORERS</h1>
+                <ul id="leaderboard-list">
+                    <li>Loading...</li>
+                </ul>
+                <button onclick="closeLeaderboard()">CLOSE</button>
+            </div>
+        </div>
     </div>
+
+    <!-- Firebase SDK (Modular) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getDatabase, ref, query, orderByChild, limitToLast, get, set, push } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+        // --- PASTE YOUR FIREBASE CONFIG HERE ---
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "SENDER_ID",
+            appId: "APP_ID"
+        };
+        // ---------------------------------------
+
+        // Initialize Firebase safely
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getDatabase(app);
+            console.log("Firebase initialized");
+        } catch (e) {
+            console.error("Firebase init failed (Likely missing config):", e);
+        }
+
+        // Expose functions globally for non-module script
+        window.openLeaderboard = async () => {
+            const screen = document.getElementById('leaderboard-screen');
+            screen.classList.remove('hidden');
+            if (db) await fetchScores();
+            else document.getElementById('leaderboard-list').innerHTML = "<li>Firebase Config Missing!</li>";
+        };
+
+        window.closeLeaderboard = () => {
+            document.getElementById('leaderboard-screen').classList.add('hidden');
+        };
+
+        window.submitScoreToFirebase = async (name, score) => {
+            if (!db) return;
+            const scoresRef = ref(db, 'scores');
+
+            // 1. Fetch current scores
+            const snapshot = await get(query(scoresRef, orderByChild('score'), limitToLast(6))); // Get 6 to compare
+            let scores = [];
+            snapshot.forEach(child => {
+                scores.push({ id: child.key, ...child.val() });
+            });
+            scores.sort((a, b) => b.score - a.score); // Descending
+
+            // 2. Check if we qualify for top 5
+            if (scores.length < 5 || score > scores[scores.length - 1].score) {
+                await push(scoresRef, {
+                    name: name,
+                    score: score,
+                    date: Date.now()
+                });
+                console.log("Score submitted!");
+            }
+        };
+
+        async function fetchScores() {
+            if (!db) return;
+            const scoresRef = ref(db, 'scores');
+            const snapshot = await get(query(scoresRef, orderByChild('score'), limitToLast(5)));
+
+            let scores = [];
+            snapshot.forEach(child => {
+                scores.push(child.val());
+            });
+            scores.sort((a, b) => b.score - a.score); // Descending
+
+            const list = document.getElementById('leaderboard-list');
+            list.innerHTML = "";
+            scores.forEach((s, index) => {
+                list.innerHTML += `<li><span>#${index + 1} ${s.name}</span> <span>${s.score}</span></li>`;
+            });
+            if (scores.length === 0) list.innerHTML = "<li>No scores yet!</li>";
+        }
+
+    </script>
     <script>
         /**
          * BANANA CHASE - HALA EDITION
@@ -688,29 +835,35 @@
             player.friction = 0.85;
 
             // Reset Inputs (Fix for sticky keys/movement)
-            state.keys = {}
+            // Add Leaderboard Button Listener
+            document.getElementById('leaderboard-btn').addEventListener('click', () => window.openLeaderboard());
 
-                ;
-            touchActive = false;
-            touchVx = 0;
-            touchVy = 0;
-
+            // Reset Game
+            state.score = 0;
+            state.timeLeft = GAME_DURATION;
+            state.stage = 1; // RESET STAGE
+            stageEl.innerText = state.stage;
             bananas.length = 0;
             particles.length = 0;
-            for (let i = 0; i < 5; i++) spawnBanana();
+            player.x = CANVAS_WIDTH / 2;
+            player.y = CANVAS_HEIGHT / 2;
+            scoreEl.innerText = '0';
+            timeEl.innerText = state.timeLeft;
+            state.lastTime = performance.now();
+            state.running = true;
 
-            // UI Updates
+            // Hide other screens
+            loginScreen.classList.add('hidden');
             startScreen.classList.add('hidden');
             gameOverScreen.classList.add('hidden');
             hud.classList.remove('hidden');
-            exitBtn.style.display = 'block';
+            document.getElementById('leaderboard-screen').classList.add('hidden');
 
-            // Reset Mobile Controls Visibility
-            joystickZone.style.display = '';
-
-            updateHUD();
+            // Mobile Audio Unlock (Should be unlocked by now, but safe to keep)
+            // ...existing unlock logic is fine...
 
             requestAnimationFrame(gameLoop);
+        }
         }
 
         function endGame() {
@@ -718,6 +871,12 @@
             hud.classList.add('hidden');
             gameOverScreen.classList.remove('hidden');
             finalScoreEl.innerText = state.score;
+
+            // Submit Score GLOBALLY
+            const playerName = document.querySelector('#start-screen h1').innerText.split('\n')[1].replace(' !', '') || 'USER';
+            if (window.submitScoreToFirebase) {
+                window.submitScoreToFirebase(playerName, state.score);
+            }
         }
 
         function spawnBanana() {
