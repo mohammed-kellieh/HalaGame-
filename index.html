@@ -387,6 +387,45 @@
             background: rgba(255, 68, 68, 1);
             transform: scale(1.05);
         }
+
+        /* Embedded Leaderboard */
+        #leaderboard-embedded {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid #444;
+        }
+
+        #leaderboard-embedded h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #embedded-score-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        #embedded-score-list li {
+            font-size: 14px;
+            padding: 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #embedded-score-list li:last-child {
+            border-bottom: none;
+        }
     </style>
 </head>
 
@@ -423,6 +462,14 @@
                         style="margin:10px 0;"><br>Click to Select </div>
             </div>
             <p style="font-size: 14px; margin-top: 20px;">Controls: WASD or Arrow Keys</p>
+
+            <!-- Embedded Leaderboard -->
+            <div id="leaderboard-embedded">
+                <h3>🏆 TOP SCORERS</h3>
+                <ul id="embedded-score-list">
+                    <li>Loading...</li>
+                </ul>
+            </div>
         </div>
         <div id="game-over-screen" class="screen hidden">
             <h1>TIME'S UP!</h1>
@@ -434,18 +481,7 @@
             <div id="joystick-knob"></div>
         </div>
         <div id="fullscreen-btn">⛶</div>
-        <div id="leaderboard-btn">🏆</div>
-
-        <!-- Leaderboard Modal -->
-        <div id="leaderboard-screen" class="screen hidden" style="background: rgba(0,0,0,0.8);">
-            <div id="leaderboard-modal">
-                <h1>🏆 TOP 5 SCORERS</h1>
-                <ul id="leaderboard-list">
-                    <li>Loading...</li>
-                </ul>
-                <button onclick="closeLeaderboard()">CLOSE</button>
-            </div>
-        </div>
+        <!-- REMOVED LEADERBOARD BUTTON & MODAL -->
     </div>
 
     <!-- Firebase SDK (Modular) -->
@@ -476,16 +512,7 @@
         }
 
         // Expose functions globally for non-module script
-        window.openLeaderboard = async () => {
-            const screen = document.getElementById('leaderboard-screen');
-            screen.classList.remove('hidden');
-            if (db) await fetchScores();
-            else document.getElementById('leaderboard-list').innerHTML = "<li>Firebase Config Missing!</li>";
-        };
-
-        window.closeLeaderboard = () => {
-            document.getElementById('leaderboard-screen').classList.add('hidden');
-        };
+        // REMOVED openLeaderboard and closeLeaderboard
 
         window.submitScoreToFirebase = async (name, score) => {
             if (!db) return;
@@ -510,7 +537,7 @@
             }
         };
 
-        async function fetchScores() {
+        window.fetchScores = async () => {
             if (!db) return;
             const scoresRef = ref(db, 'scores');
             const snapshot = await get(query(scoresRef, orderByChild('score'), limitToLast(5)));
@@ -521,13 +548,15 @@
             });
             scores.sort((a, b) => b.score - a.score); // Descending
 
-            const list = document.getElementById('leaderboard-list');
-            list.innerHTML = "";
-            scores.forEach((s, index) => {
-                list.innerHTML += `<li><span>#${index + 1} ${s.name}</span> <span>${s.score}</span></li>`;
-            });
-            if (scores.length === 0) list.innerHTML = "<li>No scores yet!</li>";
-        }
+            const list = document.getElementById('embedded-score-list');
+            if (list) {
+                list.innerHTML = "";
+                scores.forEach((s, index) => {
+                    list.innerHTML += `<li><span style="color:var(--accent-color)">#${index + 1} ${s.name}</span> <span>${s.score}</span></li>`;
+                });
+                if (scores.length === 0) list.innerHTML = "<li>No scores yet!</li>";
+            }
+        };
 
     </script>
     <script>
@@ -664,6 +693,8 @@
         restartBtn.addEventListener('click', () => {
             gameOverScreen.classList.add('hidden');
             startScreen.classList.remove('hidden');
+            // Refresh Leaderboard
+            if (window.fetchScores) window.fetchScores();
         });
 
         loginBtn.addEventListener('click', attemptLogin);
@@ -724,6 +755,9 @@
 
                 loginScreen.classList.add('hidden');
                 startScreen.classList.remove('hidden');
+
+                // Fetch Leaderboard
+                if (window.fetchScores) window.fetchScores();
             } else {
                 loginError.innerText = "ACCESS DENIED. INCORRECT PASSWORD.";
                 document.getElementById('password-input').value = '';
@@ -835,8 +869,7 @@
             player.friction = 0.85;
 
             // Reset Inputs (Fix for sticky keys/movement)
-            // Add Leaderboard Button Listener
-            document.getElementById('leaderboard-btn').addEventListener('click', () => window.openLeaderboard());
+            // Removed Leaderboard Button Listener
 
             // Reset Game
             state.score = 0;
@@ -861,7 +894,6 @@
             gameOverScreen.classList.add('hidden');
             hud.classList.remove('hidden');
             exitBtn.style.display = 'block'; // Show Exit Button
-            document.getElementById('leaderboard-screen').classList.add('hidden');
 
             // Mobile Audio Unlock (Should be unlocked by now, but safe to keep)
             // ...existing unlock logic is fine...
