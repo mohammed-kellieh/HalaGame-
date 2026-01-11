@@ -693,7 +693,9 @@
         restartBtn.addEventListener('click', () => {
             gameOverScreen.classList.add('hidden');
             startScreen.classList.remove('hidden');
-            // Score updates automatically via listener
+            // Play Intro Music
+            introMusic.currentTime = 0;
+            introMusic.play().catch(e => console.log("Intro restart failed:", e));
         });
 
         loginBtn.addEventListener('click', attemptLogin);
@@ -719,6 +721,10 @@
             // Reset to start screen
             startScreen.classList.remove('hidden');
             gameOverScreen.classList.add('hidden');
+
+            // Play Intro Music (if returning from game)
+            introMusic.currentTime = 0;
+            introMusic.play().catch(e => console.log("Intro restart failed:", e));
 
             // Clean up inputs
             state.keys = {};
