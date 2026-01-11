@@ -590,6 +590,18 @@
         const introMusic = new Audio('./hala_intro.mp3'); // Intro Music
         introMusic.loop = true;
 
+        // Robust Play Helper
+        function playIntro() {
+            introMusic.currentTime = 0;
+            introMusic.volume = 1.0;
+            const playPromise = introMusic.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Auto-play prevented:", error);
+                });
+            }
+        }
+
         // Mobile Audio Unlock
         function unlockAudio() {
             coinSound.volume = 0;
@@ -699,8 +711,7 @@
             gameOverScreen.classList.add('hidden');
             startScreen.classList.remove('hidden');
             // Play Intro Music
-            introMusic.currentTime = 0;
-            introMusic.play().catch(e => console.log("Intro restart failed:", e));
+            playIntro();
         });
 
         loginBtn.addEventListener('click', attemptLogin);
@@ -728,8 +739,7 @@
             gameOverScreen.classList.add('hidden');
 
             // Play Intro Music (if returning from game)
-            introMusic.currentTime = 0;
-            introMusic.play().catch(e => console.log("Intro restart failed:", e));
+            playIntro();
 
             // Clean up inputs
             state.keys = {};
@@ -772,7 +782,7 @@
                 startScreen.classList.remove('hidden');
 
                 // Play Intro Music
-                introMusic.play().catch(e => console.log("Intro play failed:", e));
+                playIntro();
 
                 // Initialize Leaderboard Listener if not already active
                 if (window.setupLeaderboardListener && !window.leaderboardActive) {
