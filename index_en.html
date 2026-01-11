@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -10,6 +10,7 @@
             --bg-color: #1a1a1a;
             --text-color: #f0f0f0;
             --accent-color: #ffd700;
+            /* Banana Gold */
             --danger-color: #ff4444;
             --neon-blue: #00ffff;
             --p1-color: #ff4444;
@@ -20,8 +21,8 @@
             margin: 0;
             padding: 0;
             color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Arabic Friendly Font */
+            font-family: 'Courier New', Courier, monospace;
+            /* Fallback for arcade feel */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -223,6 +224,7 @@
             margin-top: 10px;
             font-weight: bold;
             min-height: 24px;
+            /* avoid layout jump */
         }
 
         .lang-select {
@@ -278,7 +280,6 @@
             position: absolute;
             bottom: 30px;
             right: 30px;
-            /* Joystick stays on Right as per user request */
             width: 60px;
             height: 60px;
             background: rgba(255, 255, 255, 0.1);
@@ -294,7 +295,6 @@
             position: absolute;
             bottom: 20px;
             left: 120px;
-            /* Fullscreen stays Left with Exit button */
             /* Right of Exit button */
             width: 40px;
             height: 40px;
@@ -349,7 +349,6 @@
             position: absolute;
             bottom: 20px;
             left: 20px;
-            /* Exit button stays Left as per user request */
             background: rgba(255, 68, 68, 0.8);
             color: #fff;
             padding: 8px 16px;
@@ -415,53 +414,53 @@
     <div id="bg-layer"></div>
     <div id="game-container"><canvas id="gameCanvas" width="800" height="600"></canvas>
         <div id="hud" class="hidden">
-            <div id="stage-box" class="hud-item">مرحلة: <span id="stage-val">1</span></div>
-            <div id="timer-box" class="hud-item">وقت: <span id="time-val">60</span></div>
-            <div id="score-box" class="hud-item">نقاط: <span id="score-val">0</span></div>
+            <div id="stage-box" class="hud-item">STG: <span id="stage-val">1</span></div>
+            <div id="timer-box" class="hud-item">TIME: <span id="time-val">60</span></div>
+            <div id="score-box" class="hud-item">SCORE: <span id="score-val">0</span></div>
         </div>
-        <div id="exit-btn">خروج</div>
+        <div id="exit-btn">EXIT</div>
 
         <!-- Login Screen -->
         <div id="login-screen" class="screen">
-            <h1>صيد الموز 🍌</h1>
-            <p>منطقة محظورة. يرجى التعريف عن نفسك.</p>
-            <input type="text" id="username-input" class="login-input" placeholder="أدخل الاسم..." autocomplete="off">
-            <input type="password" id="password-input" class="login-input" placeholder="أدخل كلمة المرور..."
+            <h1>BANANA CHASE 🍌</h1>
+            <p>Restricted Area. Please identify yourself.</p>
+            <input type="text" id="username-input" class="login-input" placeholder="Enter Name..." autocomplete="off">
+            <input type="password" id="password-input" class="login-input" placeholder="Enter Password..."
                 autocomplete="off">
-            <button id="login-btn">دخول</button>
+            <button id="login-btn">ENTER</button>
             <div id="login-error"></div>
 
             <div class="lang-select">
-                <a href="index_en.html" class="lang-btn">English</a>
-                <a href="#" class="lang-btn active">العربية</a>
+                <a href="#" class="lang-btn active">English</a>
+                <a href="index.html" class="lang-btn">العربية</a>
             </div>
         </div>
         <div id="start-screen" class="screen hidden">
-            <h1>أهلاً بك،
-                حلا !</h1>
-            <p>اختر شخصيتك للبدء !</p>
+            <h1>WELCOME,
+                HALA !</h1>
+            <p>Select your character to start !</p>
             <div class="controls-info">
                 <div class="control-block char-select" onclick="selectCharacter(1)"><span
-                        class="control-title p1-title">أحمر غامض</span><img src="./red_sus.png" width="80"
-                        style="margin:10px 0;"><br>اضغط للاختيار </div>
+                        class="control-title p1-title">RED SUS</span><img src="./red_sus.png" width="80"
+                        style="margin:10px 0;"><br>Click to Select </div>
                 <div class="control-block char-select" onclick="selectCharacter(2)"><span
-                        class="control-title p2-title">حجاب سماوي</span><img src="./p2.png" width="80"
-                        style="margin:10px 0;"><br>اضغط للاختيار </div>
+                        class="control-title p2-title">CYAN HIJAB</span><img src="./p2.png" width="80"
+                        style="margin:10px 0;"><br>Click to Select </div>
             </div>
-            <p style="font-size: 14px; margin-top: 20px;">التحكم: WASD أو الأسهم</p>
+            <p style="font-size: 14px; margin-top: 20px;">Controls: WASD or Arrow Keys</p>
 
             <!-- Embedded Leaderboard -->
             <div id="leaderboard-embedded">
-                <h3>🏆 أفضل النتائج</h3>
+                <h3>🏆 TOP SCORERS</h3>
                 <ul id="embedded-score-list">
-                    <li>جاري التحميل...</li>
+                    <li>Loading...</li>
                 </ul>
             </div>
         </div>
         <div id="game-over-screen" class="screen hidden">
-            <h1>انتهى الوقت!</h1>
-            <p>النتيجة النهائية: <span id="final-score" style="color:white; font-weight:bold; font-size: 24px;">0</span>
-            </p><button id="restart-btn">العب مجدداً</button>
+            <h1>TIME'S UP!</h1>
+            <p>Final Score: <span id="final-score" style="color:white; font-weight:bold; font-size: 24px;">0</span>
+            </p><button id="restart-btn">PLAY AGAIN</button>
         </div>
         <!-- Mobile Controls (Touch & Drag) Enabled -->
         <div id="joystick-zone">
@@ -537,7 +536,7 @@
             onValue(recentScoresQuery, (snapshot) => {
                 console.log("Leaderboard updated via Realtime Listener");
                 if (!snapshot.exists()) {
-                    list.innerHTML = "<li>لا يوجد نتائج!</li>";
+                    list.innerHTML = "<li>No scores yet!</li>";
                     return;
                 }
 
@@ -553,7 +552,7 @@
                 });
             }, (error) => {
                 console.error("Leaderboard Realtime Error:", error);
-                list.innerHTML = "<li>خطأ في التحميل</li>";
+                list.innerHTML = "<li>Error loading scores</li>";
             });
         };
 
@@ -747,9 +746,9 @@
             const password = document.getElementById('password-input').value.trim();
 
             if (password.toLowerCase() === 'hala') {
-                state.username = username.toUpperCase() || 'مستخدم';
+                state.username = username.toUpperCase() || 'USER';
                 const startScreenH1 = document.querySelector('#start-screen h1');
-                startScreenH1.innerHTML = `أهلاً بك،<br>${state.username} !`;
+                startScreenH1.innerHTML = `WELCOME,<br>${state.username} !`;
 
                 loginScreen.classList.add('hidden');
                 startScreen.classList.remove('hidden');
@@ -760,7 +759,7 @@
                     window.leaderboardActive = true;
                 }
             } else {
-                loginError.innerText = "دخول مرفوض. كلمة المرور خاطئة.";
+                loginError.innerText = "ACCESS DENIED. INCORRECT PASSWORD.";
                 document.getElementById('password-input').value = '';
             }
         }
@@ -915,7 +914,7 @@
             statusMsg.style.fontSize = '14px';
             statusMsg.style.marginTop = '10px';
             statusMsg.style.color = '#ccc';
-            statusMsg.innerText = "جاري حفظ النتيجة...";
+            statusMsg.innerText = "Saving Score...";
 
             // Remove old status if exists
             const oldStatus = document.getElementById('submission-status');
@@ -927,11 +926,11 @@
             if (window.submitScoreToFirebase) {
                 window.submitScoreToFirebase(state.username, state.score)
                     .then(() => {
-                        statusMsg.innerText = "تم الحفظ!";
+                        statusMsg.innerText = "Score Saved!";
                         statusMsg.style.color = '#00ff00';
                     })
                     .catch(e => {
-                        statusMsg.innerText = "فشل الحفظ";
+                        statusMsg.innerText = "Save Failed (Check Console)";
                         statusMsg.style.color = '#ff4444';
                         console.error(e);
                     });
