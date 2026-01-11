@@ -592,6 +592,8 @@
         const PLAYER_SIZE = 60;
         const BANANA_SIZE = 50; // Bigger for image
         const GAME_DURATION = 60;
+        const OBSTACLE_COUNT = 3;
+        const OBSTACLE_SIZE = 40;
 
         // --- Assets ---
         const p1Img = new Image();
@@ -665,6 +667,7 @@
 
         const bananas = [];
         const particles = [];
+        const obstacles = [];
 
         // --- Setup ---
         const canvas = document.getElementById('gameCanvas');
@@ -927,6 +930,7 @@
             for (let i = 0; i < 5; i++) {
                 spawnBanana();
             }
+            initObstacles(); // Initialize Obstacles
             player.x = CANVAS_WIDTH / 2;
             player.y = CANVAS_HEIGHT / 2;
             scoreEl.innerText = '0';
@@ -1037,6 +1041,95 @@
             });
         }
 
+        // --- Obstacle Logic ---
+        function initObstacles() {
+            obstacles.length = 0;
+            for (let i = 0; i < OBSTACLE_COUNT; i++) {
+                obstacles.push({
+                    x: 0,
+                    y: 0,
+                    visible: false,
+                    timer: Math.random() * 2 + 2, // Random start timer 2-4s
+                    id: i
+                });
+            }
+        }
+
+        function updateObstacles(dt) {
+            obstacles.forEach(obs => {
+                obs.timer -= dt;
+                if (obs.timer <= 0) {
+                    // Toggle visibility
+                    obs.visible = !obs.visible;
+
+                    if (obs.visible) {
+                        // Relocate if becoming visible
+                        let safe = false;
+                        while (!safe) {
+                            const padding = 50;
+                            const tx = padding + Math.random() * (CANVAS_WIDTH - padding * 2);
+                            const ty = padding + Math.random() * (CANVAS_HEIGHT - padding * 2);
+
+                            // Check collision with player safe zone
+                            const dist = Math.sqrt((tx - player.x) ** 2 + (ty - player.y) ** 2);
+
+                            // Check collision with Joystick Zone
+                            let inJoystick = (tx > CANVAS_WIDTH - 200 && ty > CANVAS_HEIGHT - 250);
+
+                            if (dist > 150 && !inJoystick) {
+                                obs.x = tx;
+                                obs.y = ty;
+                                safe = true;
+                            }
+                        }
+                    }
+
+                    // Reset timer (Random 2-4s)
+                    obs.timer = Math.random() * 2 + 2;
+                }
+            });
+        }
+
+        function drawObstacles() {
+            obstacles.forEach(obs => {
+                if (obs.visible) {
+                    ctx.save();
+                    ctx.translate(obs.x, obs.y);
+
+                    // Draw Spike/Danger Indicator
+                    ctx.fillStyle = '#ff0000';
+                    ctx.shadowColor = '#ff0000';
+                    ctx.shadowBlur = 10;
+
+                    // Rotating square or Spike
+                    const time = performance.now() / 200;
+                    ctx.rotate(time);
+                    ctx.fillRect(-OBSTACLE_SIZE / 2, -OBSTACLE_SIZE / 2, OBSTACLE_SIZE, OBSTACLE_SIZE);
+
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(-OBSTACLE_SIZE / 2, -OBSTACLE_SIZE / 2, OBSTACLE_SIZE, OBSTACLE_SIZE);
+
+                    ctx.restore();
+                }
+            });
+        }
+
+        function checkObstacleCollisions() {
+            obstacles.forEach(obs => {
+                if (obs.visible) {
+                    const dx = player.x - obs.x;
+                    const dy = player.y - obs.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    // Collision Radius check
+                    if (dist < (PLAYER_SIZE / 2 + OBSTACLE_SIZE / 2 - 10)) {
+                        endGame();
+                    }
+                }
+            });
+        }
+
         function createParticles(x, y, color) {
             for (let i = 0; i < 8; i++) {
                 const angle = Math.random() * Math.PI * 2;
@@ -1139,7 +1232,11 @@
                 }
             }
 
-            // 4. Update Particles
+            // 4. Update Obstacles
+            updateObstacles(dt);
+            checkObstacleCollisions();
+
+            // 5. Update Particles
             for (let i = particles.length - 1; i >= 0; i--) {
                 const p = particles[i];
                 p.x += p.vx;
@@ -1241,6 +1338,9 @@
 
                 ctx.restore();
             }
+
+            // Draw Obstacles
+            drawObstacles();
 
             // Player
             ctx.save();
