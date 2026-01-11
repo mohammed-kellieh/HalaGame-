@@ -1092,18 +1092,15 @@
                     ctx.translate(obs.x, obs.y);
 
                     // Draw Spike/Danger Indicator
-                    ctx.fillStyle = '#ff0000';
+                    // Draw Skull Emoji
+                    ctx.save();
+                    ctx.font = `${OBSTACLE_SIZE}px sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
                     ctx.shadowColor = '#ff0000';
-                    ctx.shadowBlur = 10;
-
-                    // Rotating square or Spike
-                    const time = performance.now() / 200;
-                    ctx.rotate(time);
-                    ctx.fillRect(-OBSTACLE_SIZE / 2, -OBSTACLE_SIZE / 2, OBSTACLE_SIZE, OBSTACLE_SIZE);
-
-                    ctx.strokeStyle = '#fff';
-                    ctx.lineWidth = 2;
-                    ctx.strokeRect(-OBSTACLE_SIZE / 2, -OBSTACLE_SIZE / 2, OBSTACLE_SIZE, OBSTACLE_SIZE);
+                    ctx.shadowBlur = 15;
+                    ctx.fillText('☠️', 0, 0);
+                    ctx.restore();
 
                     ctx.restore();
                 }
