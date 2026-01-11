@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Banana Chase 🍌</title>
+    <!-- Google Fonts: Lalezar for Arabic Gaming Look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/css2">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #1a1a1a;
@@ -20,7 +24,7 @@
             margin: 0;
             padding: 0;
             color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Lalezar', cursive, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             /* Arabic Friendly Font */
             display: flex;
             flex-direction: column;
@@ -746,7 +750,7 @@
             const username = usernameInput.value.trim();
             const password = document.getElementById('password-input').value.trim();
 
-            if (password.toLowerCase() === 'hala') {
+            if (password.toLowerCase() === 'hala' || password === 'هلا') {
                 state.username = username.toUpperCase() || 'مستخدم';
                 const startScreenH1 = document.querySelector('#start-screen h1');
                 startScreenH1.innerHTML = `أهلاً بك،<br>${state.username} !`;
