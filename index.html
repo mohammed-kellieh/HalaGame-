@@ -1002,17 +1002,25 @@
                 value = 3;
             }
 
-            // Ensure not spawning on any player
+            // Ensure not spawning on any player OR in joystick zone
             let safe = false;
             let attempts = 0;
 
-            while (!safe && attempts < 10) {
+            while (!safe && attempts < 20) {
                 let tooClose = false;
+
+                // 1. Check Player Distance
                 const dist = Math.sqrt((x - player.x) ** 2 + (y - player.y) ** 2);
                 if (dist < 100) tooClose = true;
 
-                if (!tooClose) safe = true;
+                // 2. Check Joystick Zone (Bottom Right)
+                // Zone: Right 50px, Bottom 120px, Size 100px.
+                // Rough Exclusion Box: x > Width - 200, y > Height - 250
+                if (x > CANVAS_WIDTH - 200 && y > CANVAS_HEIGHT - 250) {
+                    tooClose = true;
+                }
 
+                if (!tooClose) safe = true;
                 else {
                     x = padding + Math.random() * (CANVAS_WIDTH - padding * 2);
                     y = padding + Math.random() * (CANVAS_HEIGHT - padding * 2);
