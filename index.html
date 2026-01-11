@@ -587,6 +587,8 @@
         bananaImg.src = './banana.png';
         // Sound
         const coinSound = new Audio('./coin.mp3');
+        const introMusic = new Audio('./hala_intro.mp3'); // Intro Music
+        introMusic.loop = true;
 
         // Mobile Audio Unlock
         function unlockAudio() {
@@ -743,6 +745,11 @@
             state.selectedChar = id;
             player.img = (id === 1) ? p1Img : p2Img;
             player.color = (id === 1) ? '#ff4444' : '#00ffff';
+
+            // Stop Intro Music
+            introMusic.pause();
+            introMusic.currentTime = 0;
+
             startGame();
         }
 
@@ -757,6 +764,9 @@
 
                 loginScreen.classList.add('hidden');
                 startScreen.classList.remove('hidden');
+
+                // Play Intro Music
+                introMusic.play().catch(e => console.log("Intro play failed:", e));
 
                 // Initialize Leaderboard Listener if not already active
                 if (window.setupLeaderboardListener && !window.leaderboardActive) {
