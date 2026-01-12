@@ -974,10 +974,18 @@
         }
 
 
-        function endGame() {
+        function endGame(reason = 'timeout') {
             state.running = false;
             hud.classList.add('hidden');
             gameOverScreen.classList.remove('hidden');
+
+            const gameOverTitle = gameOverScreen.querySelector('h1');
+            if (reason === 'collision') {
+                gameOverTitle.innerText = "GAME OVER 💀";
+            } else {
+                gameOverTitle.innerText = "TIME'S UP!";
+            }
+
             finalScoreEl.innerText = state.score;
 
             // Give feedback
@@ -1142,7 +1150,7 @@
 
                     // Collision Radius check
                     if (dist < (PLAYER_SIZE / 2 + OBSTACLE_SIZE / 2 - 10)) {
-                        endGame();
+                        endGame('collision');
                     }
                 }
             });
@@ -1170,7 +1178,7 @@
 
             if (state.timeLeft <= 0) {
                 state.timeLeft = 0;
-                endGame();
+                endGame('timeout');
                 return;
             }
 
