@@ -310,7 +310,8 @@ button:active {
 }
 
 /* Joystick Media Queries */
-@media (max-width: 900px) {
+/* Joystick Media Queries - Support iPads/Tablets */
+@media (max-width: 1366px) {
     #joystick-zone {
         display: none;
     }
@@ -320,6 +321,11 @@ button:active {
     }
 
     #joystick-knob {
+        display: flex;
+    }
+
+    /* Ensure Fullscreen button is also visible on touch devices */
+    #fullscreen-btn {
         display: flex;
     }
 }
