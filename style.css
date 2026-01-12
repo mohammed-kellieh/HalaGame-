@@ -354,6 +354,25 @@ body.is-touch .mute-btn {
         bottom: 80px;
         right: 80px;
     }
+
+    /* Restore CSS Fallback: Move buttons up on tablets even if JS fails */
+    #exit-btn,
+    #fullscreen-btn,
+    .mute-btn {
+        bottom: 100px !important;
+        bottom: calc(80px + env(safe-area-inset-bottom)) !important;
+        /* Dynamic safe area */
+    }
+}
+
+/* Extra Safety: Use CSS Pointer/Hover features to detect touch */
+@media (hover: none) and (pointer: coarse) {
+
+    #exit-btn,
+    #fullscreen-btn,
+    .mute-btn {
+        bottom: 100px !important;
+    }
 }
 
 /* Generic Screen Media Query */
