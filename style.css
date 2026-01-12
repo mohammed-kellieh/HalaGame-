@@ -324,6 +324,16 @@ button:active {
         display: flex;
     }
 
+    /* Adjust for Tablets/iPads: Larger Joystick, more comfortable position */
+    @media (min-width: 768px) {
+        #joystick-zone.show {
+            width: 140px;
+            height: 140px;
+            bottom: 80px;
+            right: 80px;
+        }
+    }
+
     /* Ensure Fullscreen button is also visible on touch devices */
     #fullscreen-btn {
         display: flex;
