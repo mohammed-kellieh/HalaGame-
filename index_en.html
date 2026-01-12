@@ -425,58 +425,51 @@
 
         #embedded-score-list li:last-child {
             border-bottom: none;
-        }
-    </style>
-    <style>
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 24px;
-                /* Smaller Title */
-                margin-bottom: 5px;
-            }
-
-            p {
-                font-size: 14px;
-                margin: 5px 0 10px;
-                /* Tighter Paragraphs */
-            }
-
-            .controls-info {
-                transform: scale(0.8);
-                /* Shrink controls */
-                margin-bottom: 5px;
-                gap: 10px;
-                width: 100%;
-                justify-content: center;
-            }
-
-            .control-block {
-                padding: 10px;
-                /* Reduced Padding */
-            }
-
-            .instructions-box {
-                margin: 5px 0 !important;
-                padding: 5px !important;
-                font-size: 12px;
-            }
-
-            .instructions-box p {
-                margin: 2px 0 !important;
-            }
-
-            #leaderboard-embedded {
-                margin-top: 5px;
-                /* Tighter against instructions */
-                padding: 5px;
-                max-height: 120px;
-                /* Short list to force fit */
-            }
 
             #leaderboard-embedded h3 {
                 font-size: 14px;
                 margin-bottom: 5px;
             }
+        }
+
+        /* Entrance Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Apply Animation to Start Screen Elements */
+        #start-screen>* {
+            opacity: 0;
+            /* Star hidden */
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        #start-screen h1 {
+            animation-delay: 0.1s;
+        }
+
+        #start-screen p {
+            animation-delay: 0.2s;
+        }
+
+        #start-screen .controls-info {
+            animation-delay: 0.3s;
+        }
+
+        #start-screen .instructions-box {
+            animation-delay: 0.4s;
+        }
+
+        #start-screen #leaderboard-embedded {
+            animation-delay: 0.5s;
         }
     </style>
 </head>
