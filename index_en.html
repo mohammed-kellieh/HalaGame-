@@ -364,6 +364,25 @@
             }
         }
 
+        .mute-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 200;
+            padding: 10px;
+            color: white;
+            text-shadow: 0 0 5px #000;
+            transition: transform 0.1s;
+        }
+
+        .mute-btn:hover {
+            transform: scale(1.1);
+        }
+
         #joystick-knob {
             width: 40px;
             height: 40px;
@@ -684,8 +703,30 @@
         bananaImg.src = './banana.png';
         // Sound
         const coinSound = new Audio('./coin.mp3');
+        const crunchSound = new Audio('./Game Sound - Eat and Brup - Sound Effect.mp3'); // Updated
+        const burpSound = new Audio('./Game Sound - Eat and Brup - Sound Effect.mp3');
         const introMusic = new Audio('./hala_intro.mp3'); // Intro Music
         introMusic.loop = true;
+        const gameOverSound = new Audio('./gameover.mp3');
+
+        // Global Mute Logic
+        let isMuted = false;
+        const audioObjects = [coinSound, crunchSound, burpSound, introMusic, gameOverSound];
+
+        window.toggleMute = () => {
+            isMuted = !isMuted;
+            audioObjects.forEach(audio => {
+                audio.muted = isMuted;
+            });
+
+            // Update Icons
+            const icon = isMuted ? '🔇' : '🔊';
+            const btnStart = document.getElementById('mute-btn-start');
+            const btnGame = document.getElementById('mute-btn-game');
+
+            if (btnStart) btnStart.innerHTML = icon;
+            if (btnGame) btnGame.innerHTML = icon;
+        };
 
         // Robust Play Helper
         function playIntro() {

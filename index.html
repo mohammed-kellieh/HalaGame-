@@ -500,6 +500,25 @@
             }
         }
 
+        .mute-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 200;
+            padding: 10px;
+            color: white;
+            text-shadow: 0 0 5px #000;
+            transition: transform 0.1s;
+        }
+
+        .mute-btn:hover {
+            transform: scale(1.1);
+        }
+
         /* Entrance Animations */
         @keyframes fadeInUp {
             from {
@@ -549,6 +568,8 @@
             <div id="stage-box" class="hud-item">مرحلة: <span id="stage-val">1</span></div>
             <div id="timer-box" class="hud-item">وقت: <span id="time-val">60</span></div>
             <div id="score-box" class="hud-item">نقاط: <span id="score-val">0</span></div>
+            <!-- Mute Button (Game) -->
+            <button id="mute-btn-game" class="mute-btn" onclick="toggleMute()">🔊</button>
         </div>
         <div id="exit-btn">خروج</div>
 
@@ -570,6 +591,8 @@
             </div>
         </div>
         <div id="start-screen" class="screen hidden">
+            <!-- Mute Button (Start) -->
+            <button id="mute-btn-start" class="mute-btn" onclick="toggleMute()">🔊</button>
             <h1>أهلاً بك،
                 حلا !</h1>
             <p>قدّيش سرعتك بالأكل؟ موزاتك بالدقيقة محسوبة؟</p>
@@ -728,8 +751,30 @@
         bananaImg.src = './banana.png';
         // Sound
         const coinSound = new Audio('./coin.mp3');
+        const crunchSound = new Audio('./Game Sound - Eat and Brup - Sound Effect.mp3'); // Updated
+        const burpSound = new Audio('./Game Sound - Eat and Brup - Sound Effect.mp3');
         const introMusic = new Audio('./hala_intro.mp3'); // Intro Music
         introMusic.loop = true;
+        const gameOverSound = new Audio('./gameover.mp3');
+
+        // Global Mute Logic
+        let isMuted = false;
+        const audioObjects = [coinSound, crunchSound, burpSound, introMusic, gameOverSound];
+
+        window.toggleMute = () => {
+            isMuted = !isMuted;
+            audioObjects.forEach(audio => {
+                audio.muted = isMuted;
+            });
+
+            // Update Icons
+            const icon = isMuted ? '🔇' : '🔊';
+            const btnStart = document.getElementById('mute-btn-start');
+            const btnGame = document.getElementById('mute-btn-game');
+
+            if (btnStart) btnStart.innerHTML = icon;
+            if (btnGame) btnGame.innerHTML = icon;
+        };
 
         // Robust Play Helper
         function playIntro() {
