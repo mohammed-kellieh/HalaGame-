@@ -609,7 +609,7 @@
             if (!db || !list) return;
 
             const scoresRef = ref(db, 'scores');
-            const recentScoresQuery = query(scoresRef, orderByChild('score'), limitToLast(5));
+            const recentScoresQuery = query(scoresRef, orderByChild('score'), limitToLast(100));
 
             onValue(recentScoresQuery, (snapshot) => {
                 console.log("Leaderboard updated via Realtime Listener");
