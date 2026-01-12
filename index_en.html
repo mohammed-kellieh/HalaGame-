@@ -3,8 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banana Chase 🍌</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Cache Busting Meta Tags -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>HalaGame-</title>
     <style>
         :root {
             --bg-color: #1a1a1a;
@@ -333,7 +337,12 @@
 
 
         /* Show on screens smaller than 1024px (Tablets/Phones) */
-        @media (max-width: 800px) {
+        @media (max-width: 900px) {
+            h1 {
+                font-size: 24px;
+                /* Smaller Title */
+            }
+
             #joystick-zone {
                 display: none;
                 /* Hidden by default */
@@ -540,6 +549,7 @@
                     <li>Loading...</li>
                 </ul>
             </div>
+            <small style="position:absolute; bottom:5px; right:5px; opacity:0.5; color: white;">v2.0</small>
         </div>
         <div id="game-over-screen" class="screen hidden">
             <h1>TIME'S UP!</h1>
