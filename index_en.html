@@ -429,17 +429,52 @@
     </style>
     <style>
         @media (max-width: 600px) {
-            #leaderboard-embedded {
-                margin-top: 10px;
-                /* Reduced from 20px */
-                padding: 10px;
-                max-height: 200px;
-                /* Limit height to avoid overflow */
+            h1 {
+                font-size: 24px;
+                /* Smaller Title */
+                margin-bottom: 5px;
+            }
+
+            p {
+                font-size: 14px;
+                margin: 5px 0 10px;
+                /* Tighter Paragraphs */
             }
 
             .controls-info {
-                transform: scale(0.9);
-                /* Slightly smaller to save space */
+                transform: scale(0.8);
+                /* Shrink controls */
+                margin-bottom: 5px;
+                gap: 10px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .control-block {
+                padding: 10px;
+                /* Reduced Padding */
+            }
+
+            .instructions-box {
+                margin: 5px 0 !important;
+                padding: 5px !important;
+                font-size: 12px;
+            }
+
+            .instructions-box p {
+                margin: 2px 0 !important;
+            }
+
+            #leaderboard-embedded {
+                margin-top: 5px;
+                /* Tighter against instructions */
+                padding: 5px;
+                max-height: 120px;
+                /* Short list to force fit */
+            }
+
+            #leaderboard-embedded h3 {
+                font-size: 14px;
                 margin-bottom: 5px;
             }
         }
