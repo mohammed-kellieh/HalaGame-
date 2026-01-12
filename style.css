@@ -333,26 +333,28 @@ body.is-touch #fullscreen-btn {
         display: flex;
     }
 
-    /* Adjust for Tablets/iPads: Larger Joystick, more comfortable position */
-    @media (min-width: 768px) {
-        #joystick-zone.show {
-            width: 140px;
-            height: 140px;
-            bottom: 80px;
-            right: 80px;
-        }
-
-        /* Move bottom controls up to avoid Home Bar swipe conflict */
-        #exit-btn,
-        #fullscreen-btn,
-        .mute-btn {
-            bottom: 60px !important;
-        }
-    }
-
     /* Ensure Fullscreen button is also visible on touch devices */
     #fullscreen-btn {
         display: flex;
+    }
+}
+
+/* Tablet/iPad Specific Tweaks - MUST BE SEPARATE BLOCK (No Nesting) */
+/* Target tablets: larger than 768px but smaller than 1366px */
+@media (min-width: 768px) and (max-width: 1366px) {
+    #joystick-zone.show {
+        width: 140px;
+        height: 140px;
+        bottom: 80px;
+        right: 80px;
+    }
+
+    /* Move bottom controls up to avoid Home Bar swipe conflict */
+    #exit-btn,
+    #fullscreen-btn,
+    .mute-btn {
+        bottom: 100px !important;
+        /* Increased to 100px for safety */
     }
 }
 
