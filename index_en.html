@@ -423,6 +423,23 @@
             border-bottom: none;
         }
     </style>
+    <style>
+        @media (max-width: 600px) {
+            #leaderboard-embedded {
+                margin-top: 10px;
+                /* Reduced from 20px */
+                padding: 10px;
+                max-height: 200px;
+                /* Limit height to avoid overflow */
+            }
+
+            .controls-info {
+                transform: scale(0.9);
+                /* Slightly smaller to save space */
+                margin-bottom: 5px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -445,6 +462,13 @@
             <button id="login-btn">ENTER</button>
             <div id="login-error"></div>
 
+            <div class="instructions-box"
+                style="margin: 15px 0; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;">
+                <p style="margin: 5px 0;">Normal banana? One point</p>
+                <p style="margin: 5px 0;">Spinning banana? 3.</p>
+                <p style="margin: 5px 0; color: #ff5555; font-weight: bold;">Skull? Game over. 💀</p>
+            </div>
+
             <div class="lang-select">
                 <a href="#" class="lang-btn active">English</a>
                 <a href="index.html" class="lang-btn">العربية</a>
@@ -463,12 +487,6 @@
                         style="margin:10px 0;"><br>Click to Select </div>
             </div>
 
-            <div class="instructions-box"
-                style="margin: 15px 0; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;">
-                <p style="margin: 5px 0;">Normal banana? One point</p>
-                <p style="margin: 5px 0;">Spinning banana? 3.</p>
-                <p style="margin: 5px 0; color: #ff5555; font-weight: bold;">Skull? Game over. 💀</p>
-            </div>
 
             <p style="font-size: 14px; margin-top: 20px;">Controls: WASD or Arrow Keys</p>
 

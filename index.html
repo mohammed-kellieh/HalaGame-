@@ -428,6 +428,23 @@
             border-bottom: none;
         }
     </style>
+    <style>
+        @media (max-width: 600px) {
+            #leaderboard-embedded {
+                margin-top: 10px;
+                /* Reduced from 20px */
+                padding: 10px;
+                max-height: 200px;
+                /* Limit height to avoid overflow */
+            }
+
+            .controls-info {
+                transform: scale(0.9);
+                /* Slightly smaller to save space */
+                margin-bottom: 5px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -450,6 +467,13 @@
             <button id="login-btn">دخول</button>
             <div id="login-error"></div>
 
+            <div class="instructions-box"
+                style="margin: 15px 0; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;">
+                <p style="margin: 5px 0;">الموزة العادية؟ نقطة.</p>
+                <p style="margin: 5px 0;">الموزة السبينر؟ 3.</p>
+                <p style="margin: 5px 0; color: #ff5555; font-weight: bold;">والجمجمة؟ ودّع الجولة. 💀🎮</p>
+            </div>
+
             <div class="lang-select">
                 <a href="index_en.html" class="lang-btn">English</a>
                 <a href="#" class="lang-btn active">العربية</a>
@@ -468,12 +492,6 @@
                         style="margin:10px 0;"><br>اضغط للاختيار </div>
             </div>
 
-            <div class="instructions-box"
-                style="margin: 15px 0; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;">
-                <p style="margin: 5px 0;">الموزة العادية؟ نقطة.</p>
-                <p style="margin: 5px 0;">الموزة السبينر؟ 3.</p>
-                <p style="margin: 5px 0; color: #ff5555; font-weight: bold;">والجمجمة؟ ودّع الجولة. 💀🎮</p>
-            </div>
 
             <p style="font-size: 14px; margin-top: 20px;">التحكم: WASD أو الأسهم</p>
 
