@@ -337,12 +337,18 @@
 
 
         /* Show on screens smaller than 1024px (Tablets/Phones) */
-        @media (max-width: 1024px) {
+        @media (max-width: 800px) {
             #joystick-zone {
-                display: block;
+                display: none;
+                /* Hidden by default */
             }
 
-            #fullscreen-btn {
+            #joystick-zone.show {
+                display: block;
+                /* Only show when class added */
+            }
+
+            #joystick-knob {
                 display: flex;
             }
         }
@@ -855,9 +861,7 @@
             // Reset screens
             hud.classList.add('hidden');
             exitBtn.style.display = 'none';
-            joystickZone.style.display = 'none';
-
-
+            joystickZone.classList.remove('show'); // Hide joystick
 
             // Reset to start screen
             startScreen.classList.remove('hidden');
@@ -1051,7 +1055,7 @@
             gameOverScreen.classList.add('hidden');
             hud.classList.remove('hidden');
             exitBtn.style.display = 'block'; // Show Exit Button
-            joystickZone.style.display = 'block'; // Ensure Joystick is visible
+            joystickZone.classList.add('show'); // Ensure Joystick is visible
 
             // Mobile Audio Unlock (Should be unlocked by now, but safe to keep)
             // ...existing unlock logic is fine...

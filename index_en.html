@@ -333,12 +333,18 @@
 
 
         /* Show on screens smaller than 1024px (Tablets/Phones) */
-        @media (max-width: 1024px) {
+        @media (max-width: 800px) {
             #joystick-zone {
-                display: block;
+                display: none;
+                /* Hidden by default */
             }
 
-            #fullscreen-btn {
+            #joystick-zone.show {
+                display: block;
+                /* Only show when class added */
+            }
+
+            #joystick-knob {
                 display: flex;
             }
         }
@@ -824,11 +830,6 @@
             // We don't need to explicitly cancelAnimation frame if we check state.running inside loop, 
             // but `gameLoop` keeps requesting frame if state.running? 
             // Let's check `gameLoop` implementation later. 
-            // Usually `if (!state.running) return;` is best.
-            // I'll assume I need to modify gameLoop or add the check.
-            // Looking at file content: `function gameLoop() { update(dt); draw(); requestAnimationFrame(gameLoop); }`
-            // Wait, I haven't seen `gameLoop` function yet in my `view_file` (it stopped at line 800).
-            // But `startGame` sets `state.running = true`. I should ensure `gameLoop` checks this.
             // Based on standard patterns, I'll add the check if not present or rely on `state.running` being checked.
         }
 
@@ -1002,7 +1003,7 @@
             gameOverScreen.classList.add('hidden');
             hud.classList.remove('hidden');
             exitBtn.style.display = 'block'; // Show Exit Button
-            joystickZone.style.display = 'block'; // Ensure Joystick is visible
+            joystickZone.classList.add('show'); // Ensure Joystick is visible
 
             // Mobile Audio Unlock (Should be unlocked by now, but safe to keep)
             // ...existing unlock logic is fine...
