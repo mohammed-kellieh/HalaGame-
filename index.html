@@ -526,15 +526,7 @@
         }
 
         /* Ensure HUD allows clicks to pass through except for buttons */
-        #hud {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 100;
-        }
+        /* REMOVED DUPLICATE #hud CSS THAT BROKE LAYOUT */
 
         /* Enable pointers for HUD items if needed, or just specific buttons */
         .mute-btn {
@@ -594,9 +586,9 @@
             <div id="stage-box" class="hud-item">مرحلة: <span id="stage-val">1</span></div>
             <div id="timer-box" class="hud-item">وقت: <span id="time-val">60</span></div>
             <div id="score-box" class="hud-item">نقاط: <span id="score-val">0</span></div>
-            <!-- Mute Button (Game) -->
-            <button id="mute-btn-game" class="mute-btn" onclick="toggleMute()">🔊</button>
         </div>
+        <!-- Mute Button (Game) - Moved OUT of HUD to avoid layout conflict -->
+        <button id="mute-btn-game" class="mute-btn" onclick="toggleMute()">🔊</button>
         <div id="exit-btn">خروج</div>
 
         <!-- Login Screen -->
@@ -648,7 +640,7 @@
                     <li>جاري التحميل...</li>
                 </ul>
             </div>
-            <small style="position:absolute; bottom:5px; right:5px; opacity:0.5; color: white;">v2.3</small>
+            <small style="position:absolute; bottom:5px; right:5px; opacity:0.5; color: white;">v2.4</small>
         </div>
         <div id="game-over-screen" class="screen hidden">
             <h1>انتهى الوقت!</h1>
