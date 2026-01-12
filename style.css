@@ -310,6 +310,15 @@ button:active {
 }
 
 /* Joystick Media Queries */
+/* Force Joystick on ANY touch device regardless of screen width */
+body.is-touch #joystick-zone.show {
+    display: block !important;
+}
+
+body.is-touch #fullscreen-btn {
+    display: flex !important;
+}
+
 /* Joystick Media Queries - Support iPads/Tablets */
 @media (max-width: 1366px) {
     #joystick-zone {
