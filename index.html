@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com/css2">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=3.3">
+    <link rel="stylesheet" href="style.css?v=3.4">
     <style>
         body {
             font-family: "Lalezar", cursive, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -81,7 +81,7 @@
                     <li>جاري التحميل...</li>
                 </ul>
             </div>
-            <small style="position:absolute; bottom:5px; right:5px; opacity:0.5; color: white;">v3.3</small>
+            <small style="position:absolute; bottom:5px; right:5px; opacity:0.5; color: white;">v3.4</small>
         </div>
         <div id="game-over-screen" class="screen hidden">
             <h1>انتهى الوقت!</h1>
@@ -872,8 +872,8 @@
                 player.vx *= -0.8;
             }
 
-            // Mobile Browser Header Safe Zone
-            const SAFE_ZONE_TOP = 60;
+            // Mobile Browser Header Safe Zone (Increased for large headers + HUD)
+            const SAFE_ZONE_TOP = 130;
             if (player.y < r + SAFE_ZONE_TOP) {
                 player.y = r + SAFE_ZONE_TOP;
                 player.vy *= -0.8;
