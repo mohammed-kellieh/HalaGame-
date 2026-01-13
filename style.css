@@ -152,7 +152,8 @@ p {
 
 .control-block {
     border: 1px solid #555;
-    padding: 20px;
+    padding: 10px;
+    /* Reduced from 20px */
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.05);
 }
